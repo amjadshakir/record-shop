@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 
-public class Record {
+public class MusicRecord {
 
     @Id
     @GeneratedValue
