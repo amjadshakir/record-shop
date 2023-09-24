@@ -1,6 +1,6 @@
 package com.techreturners.recordshop.model;
 
-public enum Genre {
+public enum MusicGenre {
     Rock,
     Jazz,
     Country,

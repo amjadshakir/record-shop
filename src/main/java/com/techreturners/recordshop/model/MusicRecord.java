@@ -27,5 +27,5 @@ public class MusicRecord {
     Long stock;
 
     @Column
-    Genre genre;
+    MusicGenre genre;
 }
