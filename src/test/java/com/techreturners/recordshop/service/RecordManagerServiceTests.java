@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -55,6 +57,20 @@ class RecordManagerServiceTests {
         });
         assertThat(thrownException.getMessage()).isEqualTo(
                 "Invalid input for Stock. Please enter valid positive integer value for stock");
+    }
+
+    @Test
+    public void testGetMusicRecordByReleaseYear() {
+
+        Integer releaseYear = 2020;
+        var musicRecord = new MusicRecord(105L,
+                "Album 105", "Artist 105", 2020,50L, MusicGenre.Jazz);
+
+        when(mockRecordManagerRepository.findByReleaseYear(releaseYear)).thenReturn(Optional.of(musicRecord));
+
+        MusicRecord actualResult = recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
+
+        assertThat(actualResult).isEqualTo(musicRecord);
     }
 
 }
