@@ -50,4 +50,13 @@ public class RecordManagerController {
             throws RecordNotFoundException {
         return new ResponseEntity<>(recordManagerService.getMusicRecordByReleaseYear(releaseYear), HttpStatus.OK);
     }
+
+    @DeleteMapping({"/{recordId}"})
+    public ResponseEntity<Void> deleteMusicRecordById(@PathVariable("recordId") Long recordId)
+                throws RecordNotFoundException{
+        boolean isDeleted = recordManagerService.deleteRecordById(recordId);
+        return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
 }

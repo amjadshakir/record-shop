@@ -78,4 +78,19 @@ public class RecordManagerControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Album 102"));
     }
 
+    @Test
+    public void testDeleteMusicRecordById() throws Exception{
+
+        MusicRecord musicRecord
+                = new MusicRecord(103L, "Album 103",
+                "Artist 103", 2000,100L, MusicGenre.Rock);
+
+        when(mockRecordManagerServiceImpl.insertMusicRecord(musicRecord)).thenReturn(musicRecord);
+        when(mockRecordManagerServiceImpl.deleteRecordById(musicRecord.getId())).thenReturn(true);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/record/" + musicRecord.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
 }
