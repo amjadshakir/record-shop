@@ -34,8 +34,22 @@ class RecordManagerRepositoryTests {
         var musicRecordByReleaseYear = recordManagerRepository.findByReleaseYear(
                 musicRecord.getReleaseYear());
         assertThat(musicRecordByReleaseYear).isNotNull();
+    }
 
+    @Test
+    public void testDeleteByRecordId(){
+        MusicRecord musicRecord =
+                new MusicRecord(101L, "Album One nought One",
+                        "Artist One nought One",
+                        2000,10L, MusicGenre.Metal);
+        recordManagerRepository.save(musicRecord);
 
+        var recordId = recordManagerRepository.findById(musicRecord.getId());
+        assertThat(recordId).isNotNull();
+
+        recordManagerRepository.deleteById(musicRecord.getId());
+        var recordAfterDeletion = recordManagerRepository.findById(musicRecord.getId());
+        assertThat(recordAfterDeletion).isEmpty();
 
     }
 

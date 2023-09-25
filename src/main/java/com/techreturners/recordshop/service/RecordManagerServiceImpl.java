@@ -52,4 +52,18 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         throw new RecordNotFoundException("Record with release year: "+
                 releaseYear+" is not found");
     }
+
+    @Override
+    public boolean deleteRecordById(Long recordId){
+        if (recordId != null){
+            Optional<MusicRecord> musicRecordOptional =
+                    musicRecordManagerRepository.findById(recordId);
+            if (musicRecordOptional.isPresent()){
+                musicRecordManagerRepository.deleteById(recordId);
+                return true;
+            }
+        }
+        throw new RecordNotFoundException("Music Record with record Id: "+
+                recordId+" is not found for delete");
+    }
 }

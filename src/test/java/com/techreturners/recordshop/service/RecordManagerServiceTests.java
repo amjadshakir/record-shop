@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -71,6 +72,19 @@ class RecordManagerServiceTests {
         MusicRecord actualResult = recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
 
         assertThat(actualResult).isEqualTo(musicRecord);
+    }
+
+    @Test
+    public void testDeleteMusicRecordById(){
+        Long recordId = 105L;
+        var musicRecord = new MusicRecord(105L,
+                "Album 105", "Artist 105", 2020,50L, MusicGenre.Jazz);
+
+        when(mockRecordManagerRepository.findById(recordId)).thenReturn(Optional.of(musicRecord));
+        mockRecordManagerRepository.deleteById(recordId);
+
+        boolean isDeleted = recordManagerServiceImpl.deleteRecordById(recordId);
+        assertTrue(isDeleted);
     }
 
 }
