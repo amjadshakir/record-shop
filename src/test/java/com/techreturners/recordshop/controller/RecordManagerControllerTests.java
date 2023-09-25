@@ -1,6 +1,7 @@
 package com.techreturners.recordshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techreturners.recordshop.exception.RecordNotFoundException;
 import com.techreturners.recordshop.model.MusicGenre;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.service.RecordManagerServiceImpl;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
@@ -79,8 +81,21 @@ public class RecordManagerControllerTests {
     }
 
     @Test
-    public void testDeleteMusicRecordById() throws Exception{
+    public void testGetMusicRecordNotFoundByReleaseYear(){
+        MusicRecord musicRecord
+                = new MusicRecord(103L, "Album 103",
+                "Artist 103", 2000,100L, MusicGenre.Rock);
+        when(mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
+                musicRecord.getReleaseYear())).thenThrow(RecordNotFoundException.class);
 
+        assertThrows(RecordNotFoundException.class, () -> {
+            mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
+                    musicRecord.getReleaseYear());});
+
+    }
+
+    @Test
+    public void testDeleteMusicRecordByValidId() throws Exception{
         MusicRecord musicRecord
                 = new MusicRecord(103L, "Album 103",
                 "Artist 103", 2000,100L, MusicGenre.Rock);
@@ -91,6 +106,20 @@ public class RecordManagerControllerTests {
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.delete("/api/v1/record/" + musicRecord.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+
+    @Test
+    public void testDeleteMusicRecordByInvalidId() throws Exception{
+        MusicRecord musicRecord
+                = new MusicRecord(103L, "Album 103",
+                "Artist 103", 2000,100L, MusicGenre.Rock);
+
+        when(mockRecordManagerServiceImpl.deleteRecordById(
+                musicRecord.getId())).thenThrow(RecordNotFoundException.class);
+
+        assertThrows(RecordNotFoundException.class, () -> {
+            mockRecordManagerServiceImpl.deleteRecordById(musicRecord.getId());});
     }
 
 }
