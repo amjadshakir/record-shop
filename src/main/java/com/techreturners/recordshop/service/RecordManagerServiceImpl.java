@@ -21,9 +21,9 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         String albumName = musicRecord.getAlbumName();
 
         if (albumName != null) {
-            Optional<MusicRecord> bookOptional =
+            Optional<MusicRecord> recordOptional =
                     musicRecordManagerRepository.findByAlbumName(albumName);
-            if (bookOptional.isPresent()) {
+            if (recordOptional.isPresent()) {
                 throw new RecordAlreadyExistsException("Album with name: " +
                         musicRecord.getAlbumName() +
                         " already exists and cannot be inserted again");
