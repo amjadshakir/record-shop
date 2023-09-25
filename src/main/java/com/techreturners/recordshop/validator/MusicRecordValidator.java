@@ -1,8 +1,6 @@
 package com.techreturners.recordshop.validator;
 
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
-import com.techreturners.recordshop.model.MusicRecord;
-
 import java.time.Year;
 
 public class MusicRecordValidator {
