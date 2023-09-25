@@ -88,9 +88,8 @@ public class RecordManagerControllerTests {
         when(mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
                 musicRecord.getReleaseYear())).thenThrow(RecordNotFoundException.class);
 
-        assertThrows(RecordNotFoundException.class, () -> {
-            mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
-                    musicRecord.getReleaseYear());});
+        assertThrows(RecordNotFoundException.class, () -> mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
+                musicRecord.getReleaseYear()));
 
     }
 
@@ -110,7 +109,7 @@ public class RecordManagerControllerTests {
 
 
     @Test
-    public void testDeleteMusicRecordByInvalidId() throws Exception{
+    public void testDeleteMusicRecordByInvalidId() {
         MusicRecord musicRecord
                 = new MusicRecord(103L, "Album 103",
                 "Artist 103", 2000,100L, MusicGenre.Rock);
@@ -118,8 +117,7 @@ public class RecordManagerControllerTests {
         when(mockRecordManagerServiceImpl.deleteRecordById(
                 musicRecord.getId())).thenThrow(RecordNotFoundException.class);
 
-        assertThrows(RecordNotFoundException.class, () -> {
-            mockRecordManagerServiceImpl.deleteRecordById(musicRecord.getId());});
+        assertThrows(RecordNotFoundException.class, () -> mockRecordManagerServiceImpl.deleteRecordById(musicRecord.getId()));
     }
 
 }

@@ -41,9 +41,7 @@ class RecordManagerServiceTests {
         var invalidMusicRecord = new MusicRecord(100L, "Album Hundred",
                 "Artist 100", 2025, 20L, MusicGenre.Instrumental);
 
-        InvalidRecordInputException thrownException = assertThrows(InvalidRecordInputException.class, () -> {
-            recordManagerServiceImpl.insertMusicRecord(invalidMusicRecord);
-        });
+        InvalidRecordInputException thrownException = assertThrows(InvalidRecordInputException.class, () -> recordManagerServiceImpl.insertMusicRecord(invalidMusicRecord));
         assertThat(thrownException.getMessage()).isEqualTo(
                 "Invalid input for Release Year. Please enter valid value for year in the past in format YYYY");
     }
@@ -53,9 +51,7 @@ class RecordManagerServiceTests {
         var invalidMusicRecord = new MusicRecord(100L, "Album Hundred",
                 "Artist 100", 2023, -20L, MusicGenre.Instrumental);
 
-        InvalidRecordInputException thrownException = assertThrows(InvalidRecordInputException.class, () -> {
-            recordManagerServiceImpl.insertMusicRecord(invalidMusicRecord);
-        });
+        InvalidRecordInputException thrownException = assertThrows(InvalidRecordInputException.class, () -> recordManagerServiceImpl.insertMusicRecord(invalidMusicRecord));
         assertThat(thrownException.getMessage()).isEqualTo(
                 "Invalid input for Stock. Please enter valid positive integer value for stock");
     }
@@ -78,9 +74,7 @@ class RecordManagerServiceTests {
     public void testGetMusicRecordNotFoundByReleaseYear(){
         Integer releaseYear = 2020;
         when(mockRecordManagerRepository.findByReleaseYear(releaseYear)).thenReturn(Optional.empty());
-        assertThrows(RecordNotFoundException.class, () -> {
-            recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
-        });
+        assertThrows(RecordNotFoundException.class, () -> recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear));
     }
 
     @Test
@@ -101,9 +95,7 @@ class RecordManagerServiceTests {
         Long recordId = 105L;
         when(mockRecordManagerRepository.findById(recordId)).thenReturn(Optional.empty());
 
-        assertThrows(RecordNotFoundException.class, () -> {
-            recordManagerServiceImpl.deleteRecordById(recordId);
-        });
+        assertThrows(RecordNotFoundException.class, () -> recordManagerServiceImpl.deleteRecordById(recordId));
     }
 
 }
