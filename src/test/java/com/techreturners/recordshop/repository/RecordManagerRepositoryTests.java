@@ -25,4 +25,18 @@ class RecordManagerRepositoryTests {
         assertThat(musicRecordId).isNotNull();
     }
 
+    @Test
+    public void testFindRecordByReleaseYear(){
+        MusicRecord musicRecord =
+                new MusicRecord(101L, "Album One nought One",
+                            "Artist One nought One",
+                        2000,10L, MusicGenre.Metal);
+        var musicRecordByReleaseYear = recordManagerRepository.findByReleaseYear(
+                musicRecord.getReleaseYear());
+        assertThat(musicRecordByReleaseYear).isNotNull();
+
+
+
+    }
+
 }
