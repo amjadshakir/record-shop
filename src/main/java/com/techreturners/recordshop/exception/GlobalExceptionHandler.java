@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    public static final String GENRE = "genre";
+    public static final String RELEASE_YEAR = "releaseYear";
+    public static final String STOCK = "stock";
+
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
 
     public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -16,19 +21,19 @@ public class GlobalExceptionHandler {
                     (InvalidFormatException) ex.getRootCause();
 
             String fieldName = invalidFormatEx.getPath().get(0).getFieldName();
-            String message="";
-            if (fieldName.equals("genre"))
-               message = "Invalid value for enum Music Genre: "+
-                       invalidFormatEx.getValue()+
-                       " Please enter valid value";
-            else if (fieldName.equals("releaseYear"))
-                message = "Invalid value for Release Year: "+
-                        invalidFormatEx.getValue()+
+            String message = switch (fieldName) {
+                case GENRE -> "Invalid value for enum Music Genre: " +
+                        invalidFormatEx.getValue() +
+                        " Please enter valid value";
+                case RELEASE_YEAR -> "Invalid value for Release Year: " +
+
+                        invalidFormatEx.getValue() +
                         " Please enter valid value for year in format YYYY";
-            else if (fieldName.equals("stock"))
-                message = "Invalid value for Stock: "+
-                        invalidFormatEx.getValue()+
+                case STOCK -> "Invalid value for Stock: " +
+                        invalidFormatEx.getValue() +
                         " Please enter valid positive integer value for stock";
+                default -> "";
+            };
             return ResponseEntity.badRequest().body(message);
         }
         return ResponseEntity.badRequest().body("Bad Request");
