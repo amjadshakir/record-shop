@@ -18,13 +18,13 @@ public class RecordManagerController {
     RecordManagerService recordManagerService;
 
     @ExceptionHandler(value = RecordAlreadyExistsException.class)
-    public ResponseEntity handleBookAlreadyExistsException(
+    public ResponseEntity handleRecordAlreadyExistsException(
             RecordAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = InvalidRecordInputException.class)
-    public ResponseEntity handleBookAlreadyExistsException(
+    public ResponseEntity handleRecordAlreadyExistsException(
             InvalidRecordInputException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
