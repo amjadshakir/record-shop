@@ -1,6 +1,7 @@
 package com.techreturners.recordshop.service;
 
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
+import com.techreturners.recordshop.exception.RecordNotFoundException;
 import com.techreturners.recordshop.model.MusicGenre;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.repository.RecordManagerRepository;
@@ -12,8 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -75,6 +75,15 @@ class RecordManagerServiceTests {
     }
 
     @Test
+    public void testGetMusicRecordNotFoundByReleaseYear(){
+        Integer releaseYear = 2020;
+        when(mockRecordManagerRepository.findByReleaseYear(releaseYear)).thenReturn(Optional.empty());
+        assertThrows(RecordNotFoundException.class, () -> {
+            recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
+        });
+    }
+
+    @Test
     public void testDeleteMusicRecordById(){
         Long recordId = 105L;
         var musicRecord = new MusicRecord(105L,
@@ -85,6 +94,16 @@ class RecordManagerServiceTests {
 
         boolean isDeleted = recordManagerServiceImpl.deleteRecordById(recordId);
         assertTrue(isDeleted);
+    }
+
+    @Test
+    public void testDeleteMusicRecordByIdNotFound(){
+        Long recordId = 105L;
+        when(mockRecordManagerRepository.findById(recordId)).thenReturn(Optional.empty());
+
+        assertThrows(RecordNotFoundException.class, () -> {
+            recordManagerServiceImpl.deleteRecordById(recordId);
+        });
     }
 
 }
