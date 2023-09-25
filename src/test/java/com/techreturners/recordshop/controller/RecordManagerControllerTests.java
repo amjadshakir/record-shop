@@ -58,4 +58,24 @@ public class RecordManagerControllerTests {
                 times(1)).insertMusicRecord(musicRecord);
     }
 
+    @Test
+    public void testGetMusicRecordByAlbumYear() throws Exception{
+        MusicRecord musicRecord
+                = new MusicRecord(102L,
+                        "Album 102",
+                             "Artist 102",
+                         2021,
+                             30L,
+                                   MusicGenre.Jazz);
+
+        when(mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
+                musicRecord.getReleaseYear())).thenReturn(musicRecord);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/record/" + musicRecord.getReleaseYear()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value(2021))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Album 102"));
+    }
+
 }

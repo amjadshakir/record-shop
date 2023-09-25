@@ -2,6 +2,7 @@ package com.techreturners.recordshop.service;
 
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
 import com.techreturners.recordshop.exception.RecordAlreadyExistsException;
+import com.techreturners.recordshop.exception.RecordNotFoundException;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.repository.RecordManagerRepository;
 import com.techreturners.recordshop.validator.MusicRecordValidator;
@@ -36,5 +37,19 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         else
             throw new InvalidRecordInputException("Invalid input entered. Please enter" +
                     "only integers");
+    }
+
+    @Override
+    public MusicRecord getMusicRecordByReleaseYear(Integer releaseYear) {
+
+        if (releaseYear != null){
+            Optional<MusicRecord> musicRecordOptional =
+                    musicRecordManagerRepository.findByReleaseYear(releaseYear);
+            if (musicRecordOptional.isPresent()){
+                return musicRecordOptional.get();
+            }
+        }
+        throw new RecordNotFoundException("Record with release year: "+
+                releaseYear+" is not found");
     }
 }
