@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,11 +24,10 @@ public class RecordManagerController {
     }
 
     @ExceptionHandler(value = InvalidRecordInputException.class)
-    public ResponseEntity handleInvalidRecordInputException(
+    public ResponseEntity handleRecordAlreadyExistsException(
             InvalidRecordInputException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
-
     @PostMapping
     public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
             throws RecordAlreadyExistsException {
