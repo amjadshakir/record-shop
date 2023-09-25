@@ -38,8 +38,7 @@ public class RecordManagerController {
     @PostMapping
     public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
             throws RecordAlreadyExistsException {
-        MusicRecord newMusicRecord =
-                recordManagerService.insertMusicRecord(musicRecord);
+        recordManagerService.insertMusicRecord(musicRecord);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("record", "/api/v1/record/" + musicRecord.getId());
         return new ResponseEntity<>(musicRecord, httpHeaders, HttpStatus.CREATED);
@@ -57,6 +56,5 @@ public class RecordManagerController {
         boolean isDeleted = recordManagerService.deleteRecordById(recordId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 }
