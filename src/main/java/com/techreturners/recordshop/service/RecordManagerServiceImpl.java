@@ -3,6 +3,7 @@ package com.techreturners.recordshop.service;
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
 import com.techreturners.recordshop.exception.RecordAlreadyExistsException;
 import com.techreturners.recordshop.exception.RecordNotFoundException;
+import com.techreturners.recordshop.model.MusicGenre;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.repository.RecordManagerRepository;
 import com.techreturners.recordshop.validator.MusicRecordValidator;
@@ -74,5 +75,9 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         return StreamSupport.stream(musicRecordManagerRepository.findAll().spliterator(), false)
                 .filter(record-> record.getStock() > 0)
                 .collect(Collectors.toList());
+    }
+    @Override
+    public List<MusicRecord> getAllRecordsByGenre(MusicGenre genre) {
+        return musicRecordManagerRepository.findByGenre(genre);
     }
 }

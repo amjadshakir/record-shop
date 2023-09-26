@@ -66,5 +66,18 @@ class RecordManagerRepositoryTests {
         Iterable<MusicRecord> result = recordManagerRepository.findAll();
         assertThat(result).hasSize(2);
     }
+    @Test
+    public void testFindAllRecordsByGenre() {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L,
+                "Album 1", "Artist 1", 2000,5L, MusicGenre.Jazz));
+                records.add(new MusicRecord(2L,
+                        "Album 2", "Artist 2", 2000,0L, MusicGenre.Rock));
+                        records.add(new MusicRecord(2L,
+                                "Album 2", "Artist 2", 2000,0L, MusicGenre.Jazz));
+                                recordManagerRepository.saveAll(records);
+        Iterable<MusicRecord> result = recordManagerRepository.findByGenre(MusicGenre.Jazz);
+        assertThat(result).hasSize(2);
+    }
 
 }

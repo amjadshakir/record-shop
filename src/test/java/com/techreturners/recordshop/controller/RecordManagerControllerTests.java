@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -151,6 +152,34 @@ public class RecordManagerControllerTests {
                                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(2000))
                                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(200L))
                                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value("Jazz"));
+    }
+    @Test
+    public void testGetAllRecordsByGenre() throws Exception {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L, "Album 1",
+                "Artist 1", 2000,100L, MusicGenre.Rock));
+                records.add(new MusicRecord(2L, "Album 2",
+                        "Artist 2", 2000,200L, MusicGenre.Rock));
+                        when(mockRecordManagerServiceImpl.getAllRecordsByGenre(MusicGenre.Rock)).thenReturn(records);
+        ResponseEntity<List<MusicRecord>> response = recordManagerController.getAllRecordsByGenre(MusicGenre.Rock);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(records, response.getBody());
+        assertThat(response.getBody()).hasSize(2);
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/record/genre/Rock"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Album 1"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Artist 1"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(100L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value("Rock"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Album 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("Artist 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(200L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value("Rock"));
     }
 
 

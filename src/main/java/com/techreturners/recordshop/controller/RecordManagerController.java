@@ -3,6 +3,7 @@ package com.techreturners.recordshop.controller;
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
 import com.techreturners.recordshop.exception.RecordAlreadyExistsException;
 import com.techreturners.recordshop.exception.RecordNotFoundException;
+import com.techreturners.recordshop.model.MusicGenre;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.service.RecordManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,10 @@ public class RecordManagerController {
     public ResponseEntity<List<MusicRecord>> getAllRecordsInStock(){
         List<MusicRecord> recordsInStock = recordManagerService.getAllRecordsInStock();
         return new ResponseEntity<>(recordsInStock, HttpStatus.OK);
+    }
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<MusicRecord>> getAllRecordsByGenre(@PathVariable MusicGenre genre){
+        List<MusicRecord> recordsByGenre = recordManagerService.getAllRecordsByGenre(genre);
+        return new ResponseEntity<>(recordsByGenre, HttpStatus.OK);
     }
 }
