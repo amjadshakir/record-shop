@@ -9,7 +9,10 @@ import com.techreturners.recordshop.validator.MusicRecordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RecordManagerServiceImpl implements RecordManagerService {
@@ -65,5 +68,11 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         }
         throw new RecordNotFoundException("Music Record with record Id: "+
                 recordId+" is not found for delete");
+    }
+    @Override
+    public List<MusicRecord> getAllRecordsInStock() {
+        return StreamSupport.stream(musicRecordManagerRepository.findAll().spliterator(), false)
+                .filter(record-> record.getStock() > 0)
+                .collect(Collectors.toList());
     }
 }

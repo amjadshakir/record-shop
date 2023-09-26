@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -51,6 +54,17 @@ class RecordManagerRepositoryTests {
         var recordAfterDeletion = recordManagerRepository.findById(musicRecord.getId());
         assertThat(recordAfterDeletion).isEmpty();
 
+    }
+    @Test
+    public void testFindAllRecordsInStock() {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L,
+                "Album 1", "Artist 1", 2000,5L, MusicGenre.Jazz));
+                records.add(new MusicRecord(2L,
+                        "Album 2", "Artist 12", 2000,0L, MusicGenre.Rock));
+                        recordManagerRepository.saveAll(records);
+        Iterable<MusicRecord> result = recordManagerRepository.findAll();
+        assertThat(result).hasSize(2);
     }
 
 }

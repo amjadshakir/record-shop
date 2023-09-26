@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/record")
 public class RecordManagerController {
@@ -56,5 +58,10 @@ public class RecordManagerController {
         boolean isDeleted = recordManagerService.deleteRecordById(recordId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @GetMapping("/stock")
+    public ResponseEntity<List<MusicRecord>> getAllRecordsInStock(){
+        List<MusicRecord> recordsInStock = recordManagerService.getAllRecordsInStock();
+        return new ResponseEntity<>(recordsInStock, HttpStatus.OK);
     }
 }
