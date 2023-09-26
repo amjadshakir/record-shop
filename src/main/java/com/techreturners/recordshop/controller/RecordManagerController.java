@@ -70,4 +70,9 @@ public class RecordManagerController {
         List<MusicRecord> recordsByGenre = recordManagerService.getAllRecordsByGenre(genre);
         return new ResponseEntity<>(recordsByGenre, HttpStatus.OK);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<MusicRecord> replaceExistingRecordDetails(@PathVariable Long id, @RequestBody MusicRecord record){
+        MusicRecord updatedRecord = recordManagerService.replaceExistingRecord(id, record);
+        return new ResponseEntity<>(updatedRecord, HttpStatus.OK);
+    }
 }

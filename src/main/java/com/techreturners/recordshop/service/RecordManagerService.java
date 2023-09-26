@@ -11,4 +11,5 @@ public interface RecordManagerService {
     boolean deleteRecordById(Long recordId);
     List<MusicRecord> getAllRecordsInStock();
     List<MusicRecord> getAllRecordsByGenre(MusicGenre genre);
+    MusicRecord replaceExistingRecord(Long id, MusicRecord record);
 }
