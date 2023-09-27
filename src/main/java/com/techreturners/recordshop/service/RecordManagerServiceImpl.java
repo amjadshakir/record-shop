@@ -9,6 +9,7 @@ import com.techreturners.recordshop.validator.MusicRecordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,6 +81,19 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         }
         throw new RecordNotFoundException("Music Record with record Id: " +
                 recordId + " is not found for update");
+    }
+
+    @Override
+    public List<MusicRecord> getAllAlbumsByArtist(String artistName) {
+        if (artistName != null) {
+            Optional<List<MusicRecord>> allAlbumnsOptional =
+                    musicRecordManagerRepository.findAllByArtist(artistName);
+            if (allAlbumnsOptional.isPresent()) {
+                return allAlbumnsOptional.get();
+            }
+        }
+        throw new RecordNotFoundException("Cannot find Music Records for artist: "
+                + artistName);
     }
 
 }

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/record")
 public class RecordManagerController {
@@ -66,5 +68,14 @@ public class RecordManagerController {
 
         return isUpdated ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/artist/{artistName}/albums")
+    public ResponseEntity<List<MusicRecord>> getAllAlbumsByArtist(@PathVariable String artistName) {
+        List<MusicRecord> albums = recordManagerService.getAllAlbumsByArtist(artistName);
+        if (albums.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(albums);
     }
 }
