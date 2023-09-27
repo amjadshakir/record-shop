@@ -41,13 +41,13 @@ public class RecordManagerServiceImpl implements RecordManagerService {
     }
 
     @Override
-    public MusicRecord getMusicRecordByReleaseYear(Integer releaseYear) {
+    public List<MusicRecord> getMusicRecordByReleaseYear(Integer releaseYear) {
 
         if (releaseYear != null) {
-            Optional<MusicRecord> musicRecordOptional =
+            Optional<List<MusicRecord>> musicRecordOptionalList =
                     musicRecordManagerRepository.findByReleaseYear(releaseYear);
-            if (musicRecordOptional.isPresent()) {
-                return musicRecordOptional.get();
+            if (musicRecordOptionalList.isPresent()) {
+                return musicRecordOptionalList.get();
             }
         }
         throw new RecordNotFoundException("Record with release year: " +

@@ -46,10 +46,15 @@ public class RecordManagerController {
         return new ResponseEntity<>(musicRecord, httpHeaders, HttpStatus.CREATED);
     }
 
-    @GetMapping({"/{releaseYear}"})
-    public ResponseEntity<MusicRecord> getMusicRecordByReleaseYear(@PathVariable Integer releaseYear)
+    @GetMapping({"/releaseYear/{releaseYear}"})
+    public ResponseEntity<List<MusicRecord>>getMusicRecordByReleaseYear(@PathVariable Integer releaseYear)
             throws RecordNotFoundException {
-        return new ResponseEntity<>(recordManagerService.getMusicRecordByReleaseYear(releaseYear), HttpStatus.OK);
+        List<MusicRecord> musicRecordsByReleaseYear =
+            recordManagerService.getMusicRecordByReleaseYear(releaseYear);
+        if (musicRecordsByReleaseYear.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(musicRecordsByReleaseYear);
     }
 
     @DeleteMapping({"/{recordId}"})

@@ -30,7 +30,7 @@ class RecordManagerRepositoryTests {
     }
 
     @Test
-    public void testFindRecordByReleaseYear(){
+    public void testFindRecordsByReleaseYear(){
         MusicRecord musicRecord =
                 new MusicRecord(101L, "Album One nought One",
                             "Artist One nought One",
