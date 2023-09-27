@@ -19,7 +19,7 @@ class RecordManagerRepositoryTests {
     private RecordManagerRepository recordManagerRepository;
 
     @Test
-    public void testCreatesAndFindBookByIdReturnsBook() {
+    public void testCreatesAndFindMusicRecordByIdReturnsMusicRecord() {
         MusicRecord musicRecord =
                 new MusicRecord(101L, "Album One nought One",
                         "Artist One nought One", 2000,10L, MusicGenre.Metal);
