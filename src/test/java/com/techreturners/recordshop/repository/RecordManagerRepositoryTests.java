@@ -58,7 +58,7 @@ class RecordManagerRepositoryTests {
     }
 
     @Test
-    public void testGetA(){
+    public void testGetAllByArtistName(){
         MusicRecord musicRecordA =
                 new MusicRecord(101L, "Album One",
                         "Artist One",
