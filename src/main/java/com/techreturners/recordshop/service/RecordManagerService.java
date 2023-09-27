@@ -7,7 +7,7 @@ import java.util.List;
 public interface RecordManagerService {
     MusicRecord insertMusicRecord(MusicRecord musicRecord);
 
-    MusicRecord getMusicRecordByReleaseYear(Integer releaseYear);
+    List<MusicRecord> getMusicRecordByReleaseYear(Integer releaseYear);
 
     List<MusicRecord> getAllAlbumsByArtist(String artistName);
 

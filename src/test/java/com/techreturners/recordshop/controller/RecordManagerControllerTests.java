@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class RecordManagerControllerTests {
     }
 
     @Test
-    public void testGetMusicRecordByAlbumYear() throws Exception {
+    public void testGetMusicRecordsByAlbumYearSingleRecord() throws Exception {
         MusicRecord musicRecord
                 = new MusicRecord(102L,
                 "Album 102",
@@ -74,13 +75,38 @@ public class RecordManagerControllerTests {
                 MusicGenre.Jazz);
 
         when(mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
-                musicRecord.getReleaseYear())).thenReturn(musicRecord);
+                musicRecord.getReleaseYear())).thenReturn(List.of(musicRecord));
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/record/" + musicRecord.getReleaseYear()))
+                        MockMvcRequestBuilders.get("/api/v1/record/releaseYear/" + musicRecord.getReleaseYear()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value(2021))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Album 102"));
+                .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(List.of(musicRecord))));
+    }
+
+    @Test
+    public void testGetMusicRecordsByAlbumYearMultipleRecords() throws Exception {
+        MusicRecord musicRecordFirst
+                = new MusicRecord(102L,
+                "Album 102",
+                "Artist 102",
+                2021,
+                30L,
+                MusicGenre.Jazz);
+        MusicRecord musicRecordSecond
+                = new MusicRecord(103L,
+                "Album 103",
+                "Artist 103",
+                2023,
+                40L,
+                MusicGenre.Country);
+
+        when(mockRecordManagerServiceImpl.getMusicRecordByReleaseYear(
+                musicRecordFirst.getReleaseYear())).thenReturn(List.of(musicRecordFirst, musicRecordSecond));
+
+        this.mockMvcController.perform(
+                 MockMvcRequestBuilders.get("/api/v1/record/releaseYear/" + musicRecordFirst.getReleaseYear()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(List.of(musicRecordFirst, musicRecordSecond))));
     }
 
     @Test

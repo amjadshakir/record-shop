@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,17 +59,34 @@ class RecordManagerServiceTests {
     }
 
     @Test
-    public void testGetMusicRecordByReleaseYear() {
+    public void testGetMusicRecordsByReleaseYearSingleRecord() {
 
         Integer releaseYear = 2020;
-        var musicRecord = new MusicRecord(105L,
-                "Album 105", "Artist 105", 2020,50L, MusicGenre.Jazz);
+        List<MusicRecord> musicRecord = Arrays.asList(new MusicRecord(105L,
+                "Album 105", "Artist 105", 2020,50L, MusicGenre.Jazz));
 
         when(mockRecordManagerRepository.findByReleaseYear(releaseYear)).thenReturn(Optional.of(musicRecord));
 
-        MusicRecord actualResult = recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
+        List<MusicRecord> actualResult = recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
 
-        assertThat(actualResult).isEqualTo(musicRecord);
+        assertThat(actualResult.size()).isEqualTo(musicRecord.size());
+        assertThat(actualResult.get(0)).isEqualTo(musicRecord.get(0));
+    }
+
+    @Test
+    public void testGetMusicRecordsByReleaseYearMultipleRecords() {
+
+        Integer releaseYear = 2020;
+        List<MusicRecord> musicRecord = Arrays.asList((new MusicRecord(105L,
+                "Album 105", "Artist 105", 2020,50L, MusicGenre.Jazz)),
+                            (new MusicRecord(106L,
+                "Album 106", "Artist 106", 2020,70L, MusicGenre.Country)));
+        when(mockRecordManagerRepository.findByReleaseYear(releaseYear)).thenReturn(Optional.of(musicRecord));
+        List<MusicRecord> actualResult = recordManagerServiceImpl.getMusicRecordByReleaseYear(releaseYear);
+
+        assertThat(actualResult.size()).isEqualTo(musicRecord.size());
+        assertThat(actualResult.get(0)).isEqualTo(musicRecord.get(0));
+        assertThat(actualResult.get(1)).isEqualTo(musicRecord.get(1));
     }
 
     @Test
