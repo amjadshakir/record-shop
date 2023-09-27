@@ -1,6 +1,8 @@
 # Record Shop Application
 
-The Record Shop Application is a Spring Boot-based application that simplifies the management of music records. With this application, users can effortlessly add, retrieve, update, and delete music records through RESTful endpoints that interact with a music records database.
+The Record Shop Application is a Spring Boot-based application that simplifies the management of music records. With
+this application, users can effortlessly add, retrieve, update, and delete music records through RESTful endpoints that
+interact with a music records database.
 
 ## Table of Contents
 
@@ -18,13 +20,15 @@ The Record Shop Application boasts a variety of features that cater to music rec
 
 - **Add Music Records**: Easily add new music records, including album name, artist, release year, stock, and genre.
 
-- **Retrieve Music Records**: Retrieve music records by release year, artist, or album name for quick access to your music catalog.
+- **Retrieve Music Records**: Retrieve music records by release year, artist, or album name for quick access to your
+  music catalog.
 
 - **Update Stock Amount**: Effortlessly update the stock amount of a music record as your inventory changes.
 
 - **Delete Music Records**: Delete unwanted music records by specifying their unique ID.
 
-- **Exception Handling**: Robust exception handling ensures a smooth user experience by handling scenarios like record not found or invalid input.
+- **Exception Handling**: Robust exception handling ensures a smooth user experience by handling scenarios like record
+  not found or invalid input.
 
 ## Prerequisites
 
@@ -47,28 +51,30 @@ To kickstart your journey with the Record Shop Web Application, follow these sim
 
 2. **Database Configuration**:
 
-   - Locate the `application.properties` file in the `src/main/resources` directory.
-   - Provide the necessary database connection details to configure your database.
+    - Locate the `application.properties` file in the `src/main/resources` directory.
+    - Provide the necessary database connection details to configure your database.
 
 3. **Build and Run**:
 
-   - Build the application using Maven:
+    - Build the application using Maven:
 
-     ```bash
-     mvn clean install
-     ```
+      ```bash
+      mvn clean install
+      ```
 
-   - Run the application by executing `RecordShopApplication` within your IDE or through the command line:
+    - Run the application by executing `RecordShopApplication` within your IDE or through the command line:
 
-     ```bash
-     java -jar target/record-shop-0.1.jar
-     ```
+      ```bash
+      java -jar target/record-shop-0.1.jar
+      ```
 
    The application will now be up and running at `http://localhost:8080`.
 
 ## Usage
 
-Once the application is running, you can seamlessly manage your music records by making requests to the provided API endpoints. Feel free to use tools like Postman or `curl` for making API requests and interacting with your music catalog.
+Once the application is running, you can seamlessly manage your music records by making requests to the provided API
+endpoints.
+Feel free to use tools like Postman or `curl` for making API requests and interacting with your music catalog.
 
 ## API Endpoints
 
@@ -80,11 +86,9 @@ The Record Shop Application offers the following API endpoints for your convenie
 - **PUT /api/v1/record/{recordId}/{stock}**: Update the stock amount of a music record.
 - **GET /api/v1/record/album/{albumName}**: Retrieve music records by album name.
 
-For comprehensive details on how to utilize these endpoints effectively, please refer to the API Documentation.
-
 ## Contributing
 
-We warmly welcome contributions to enhance the Record Shop Application. Here's how you can get involved:
+We welcome contributions to enhance the Record Shop Application. Here's how you can get involved:
 
 1. **Fork the Project**: Fork the project to your GitHub account.
 
@@ -95,8 +99,6 @@ We warmly welcome contributions to enhance the Record Shop Application. Here's h
 4. **Push to Your Branch**: Push your changes to the branch in your forked repository.
 
 5. **Open a Pull Request**: Open a pull request to the main project repository.
-
-Please review our [Contributing Guide](CONTRIBUTING.md) for detailed information on how to contribute effectively.
 
 ## License
 
