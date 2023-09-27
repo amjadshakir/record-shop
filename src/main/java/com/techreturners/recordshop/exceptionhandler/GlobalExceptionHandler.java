@@ -1,4 +1,4 @@
-package com.techreturners.recordshop.exception;
+package com.techreturners.recordshop.exceptionhandler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.ResponseEntity;
