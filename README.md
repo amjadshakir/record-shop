@@ -81,7 +81,7 @@ Feel free to use tools like Postman or `curl` for making API requests and intera
 The Record Shop Application offers the following API endpoints for your convenience:
 
 - **POST /api/v1/record**: Add a new music record to your collection.
-- **GET /api/v1/record/{releaseYear}**: Retrieve music records by release year.
+- **GET /api/v1/record/releaseYear/{releaseYear}**: Retrieve music records by release year.
 - **DELETE /api/v1/record/{recordId}**: Delete a specific music record by its unique ID.
 - **PUT /api/v1/record/{recordId}/{stock}**: Update the stock amount of a music record.
 - **GET /api/v1/record/album/{albumName}**: Retrieve music records by album name.
