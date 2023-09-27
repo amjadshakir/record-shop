@@ -21,24 +21,6 @@ public class RecordManagerController {
     @Autowired
     RecordManagerService recordManagerService;
 
-    @ExceptionHandler(value = RecordAlreadyExistsException.class)
-    public ResponseEntity handleRecordAlreadyExistsException(
-            RecordAlreadyExistsException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(value = RecordNotFoundException.class)
-    public ResponseEntity handleRecordANotFoundException(
-            RecordNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(value = InvalidRecordInputException.class)
-    public ResponseEntity handleInvalidRecordInputException(
-            InvalidRecordInputException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
     @PostMapping
     public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
             throws RecordAlreadyExistsException {
