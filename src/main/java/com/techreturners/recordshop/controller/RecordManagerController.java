@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/record")
 public class RecordManagerController {
@@ -56,5 +58,24 @@ public class RecordManagerController {
         boolean isDeleted = recordManagerService.deleteRecordById(recordId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{recordId}/stock")
+    public ResponseEntity<Void> updateStockAmount(
+            @PathVariable("recordId") Long recordId,
+            @RequestParam("stock") Long stock) throws RecordNotFoundException {
+        boolean isUpdated = recordManagerService.updateStockAmount(recordId, stock);
+
+        return isUpdated ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/artist/{artistName}/albums")
+    public ResponseEntity<List<MusicRecord>> getAllAlbumsByArtist(@PathVariable String artistName) {
+        List<MusicRecord> albums = recordManagerService.getAllAlbumsByArtist(artistName);
+        if (albums.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(albums);
     }
 }
