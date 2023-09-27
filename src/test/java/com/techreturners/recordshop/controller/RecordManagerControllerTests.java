@@ -12,7 +12,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -21,6 +23,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -148,6 +157,73 @@ public class RecordManagerControllerTests {
 
         assertThrows(RecordNotFoundException.class, () -> mockRecordManagerServiceImpl.deleteRecordById(musicRecord.getId()));
     }
+    @Test
+    public void testGetAllRecordsInStock() throws Exception {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L, "Album 1",
+                "Artist 1", 2000,100L, MusicGenre.Rock));
+                records.add(new MusicRecord(2L, "Album 2",
+                        "Artist 2", 2000,200L, MusicGenre.Jazz));
+                        when(mockRecordManagerServiceImpl.getAllRecordsInStock()).thenReturn(records);
+        ResponseEntity<List<MusicRecord>> response = recordManagerController.getAllRecordsInStock();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(records, response.getBody());
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/record/stock"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Album 1"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Artist 1"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(100L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value("Rock"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Album 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("Artist 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(200L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value("Jazz"));
+    }
+    @Test
+    public void testGetAllRecordsByGenre() throws Exception {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L, "Album 1",
+                "Artist 1", 2000,100L, MusicGenre.Rock));
+                records.add(new MusicRecord(2L, "Album 2",
+                        "Artist 2", 2000,200L, MusicGenre.Rock));
+                        when(mockRecordManagerServiceImpl.getAllRecordsByGenre(MusicGenre.Rock)).thenReturn(records);
+        ResponseEntity<List<MusicRecord>> response = recordManagerController.getAllRecordsByGenre(MusicGenre.Rock);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(records, response.getBody());
+        assertThat(response.getBody()).hasSize(2);
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/record/genre/Rock"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Album 1"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Artist 1"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(100L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value("Rock"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Album 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("Artist 2"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(2000))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(200L))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value("Rock"));
+    }
+    @Test
+    public void testReplaceExistingRecordDetails() throws Exception {
+        MusicRecord musicRecord =
+                new MusicRecord(4L, "Album One", "Artist One", 1992, 100L, MusicGenre.Country);
+        when(mockRecordManagerServiceImpl.replaceExistingRecord(4L, musicRecord)).thenReturn(musicRecord);
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/record/4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(musicRecord)))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
 
     @Test
     public void testGetAllAlbumsByArtist() throws Exception {

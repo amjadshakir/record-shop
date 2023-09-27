@@ -10,7 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+
 import java.util.Arrays;
+
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -116,5 +120,26 @@ class RecordManagerServiceTests {
 
         assertThrows(RecordNotFoundException.class, () -> recordManagerServiceImpl.deleteRecordById(recordId));
     }
-
+    @Test
+    public void testGetMusicRecordsInStock() {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L,
+                "Album 1", "Artist 1", 2000,5L, MusicGenre.Jazz));
+                records.add(new MusicRecord(2L,
+                        "Album 2", "Artist 12", 2000,0L, MusicGenre.Rock));
+                        when(mockRecordManagerRepository.findAll()).thenReturn(records);
+        List<MusicRecord> result = recordManagerServiceImpl.getAllRecordsInStock();
+        assertEquals(1, result.size());
+    }
+    @Test
+    public void testGetMusicRecordsByGenre() {
+        List<MusicRecord> records = new ArrayList<>();
+        records.add(new MusicRecord(1L,
+                "Album 1", "Artist 1", 2000,5L, MusicGenre.Rock));
+                records.add(new MusicRecord(2L,
+                        "Album 2", "Artist 12", 2000,0L, MusicGenre.Rock));
+                        when(mockRecordManagerRepository.findByGenre(MusicGenre.Rock)).thenReturn(records);
+        List<MusicRecord> result = recordManagerServiceImpl.getAllRecordsByGenre(MusicGenre.Rock);
+        assertEquals(2, result.size());
+    }
 }

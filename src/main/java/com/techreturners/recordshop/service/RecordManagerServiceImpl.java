@@ -3,6 +3,7 @@ package com.techreturners.recordshop.service;
 import com.techreturners.recordshop.exception.InvalidRecordInputException;
 import com.techreturners.recordshop.exception.RecordAlreadyExistsException;
 import com.techreturners.recordshop.exception.RecordNotFoundException;
+import com.techreturners.recordshop.model.MusicGenre;
 import com.techreturners.recordshop.model.MusicRecord;
 import com.techreturners.recordshop.repository.RecordManagerRepository;
 import com.techreturners.recordshop.validator.MusicRecordValidator;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RecordManagerServiceImpl implements RecordManagerService {
@@ -94,6 +97,41 @@ public class RecordManagerServiceImpl implements RecordManagerService {
         }
         throw new RecordNotFoundException("Cannot find Music Records for artist: "
                 + artistName);
+    }
+
+    @Override
+    public List<MusicRecord> getAllRecordsInStock() {
+        return StreamSupport.stream(musicRecordManagerRepository.findAll().spliterator(), false)
+                .filter(record -> record.getStock() > 0)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MusicRecord> getAllRecordsByGenre(MusicGenre genre) {
+        return musicRecordManagerRepository.findByGenre(genre);
+    }
+
+    @Override
+    public MusicRecord replaceExistingRecord(Long id, MusicRecord record) {
+//        Optional<MusicRecord> existingRecord = musicRecordManagerRepository.findById(id);
+//        if(existingRecord.isPresent()){
+//            MusicRecord recordToBeReplaced = existingRecord.get();
+//            recordToBeReplaced.setAlbumName(record.getAlbumName());
+//            recordToBeReplaced.setArtist(record.getArtist());
+//            recordToBeReplaced.setReleaseYear(record.getReleaseYear());
+//            recordToBeReplaced.setStock(record.getStock());
+//            recordToBeReplaced.setGenre(record.getGenre());
+//            return musicRecordManagerRepository.save(recordToBeReplaced);
+//        }else {
+//            throw new RecordNotFoundException("Music Record not found with ID: " + id);
+//        }
+        MusicRecord existingRecord = musicRecordManagerRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Product not found with id: " + id));
+        existingRecord.setAlbumName(record.getAlbumName());
+        existingRecord.setArtist(record.getArtist());
+        existingRecord.setReleaseYear(record.getReleaseYear());
+        existingRecord.setStock(record.getStock());
+        existingRecord.setGenre(record.getGenre());
+        return musicRecordManagerRepository.save(existingRecord);
     }
 
 }
