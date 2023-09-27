@@ -42,28 +42,44 @@ public class RecordManagerServiceImpl implements RecordManagerService {
     @Override
     public MusicRecord getMusicRecordByReleaseYear(Integer releaseYear) {
 
-        if (releaseYear != null){
+        if (releaseYear != null) {
             Optional<MusicRecord> musicRecordOptional =
                     musicRecordManagerRepository.findByReleaseYear(releaseYear);
-            if (musicRecordOptional.isPresent()){
+            if (musicRecordOptional.isPresent()) {
                 return musicRecordOptional.get();
             }
         }
-        throw new RecordNotFoundException("Record with release year: "+
-                releaseYear+" is not found");
+        throw new RecordNotFoundException("Record with release year: " +
+                releaseYear + " is not found");
     }
 
     @Override
-    public boolean deleteRecordById(Long recordId){
-        if (recordId != null){
+    public boolean deleteRecordById(Long recordId) {
+        if (recordId != null) {
             Optional<MusicRecord> musicRecordOptional =
                     musicRecordManagerRepository.findById(recordId);
-            if (musicRecordOptional.isPresent()){
+            if (musicRecordOptional.isPresent()) {
                 musicRecordManagerRepository.deleteById(recordId);
                 return true;
             }
         }
-        throw new RecordNotFoundException("Music Record with record Id: "+
-                recordId+" is not found for delete");
+        throw new RecordNotFoundException("Music Record with record Id: " +
+                recordId + " is not found for delete");
     }
+
+    @Override
+    public boolean updateStockAmount(Long recordId, Long stock) {
+        if (recordId != null && stock != null) {
+            Optional<MusicRecord> musicRecordOptional = musicRecordManagerRepository.findById(recordId);
+            if (musicRecordOptional.isPresent()) {
+                MusicRecord musicRecord = musicRecordOptional.get();
+                musicRecord.setStock(stock);
+                musicRecordManagerRepository.save(musicRecord);
+                return true;
+            }
+        }
+        throw new RecordNotFoundException("Music Record with record Id: " +
+                recordId + " is not found for update");
+    }
+
 }

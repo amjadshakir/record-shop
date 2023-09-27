@@ -57,4 +57,14 @@ public class RecordManagerController {
         return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{recordId}/stock")
+    public ResponseEntity<Void> updateStockAmount(
+            @PathVariable("recordId") Long recordId,
+            @RequestParam("stock") Long stock) throws RecordNotFoundException {
+        boolean isUpdated = recordManagerService.updateStockAmount(recordId, stock);
+
+        return isUpdated ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

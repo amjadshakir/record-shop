@@ -6,4 +6,5 @@ public interface RecordManagerService {
     MusicRecord insertMusicRecord(MusicRecord musicRecord);
     MusicRecord getMusicRecordByReleaseYear(Integer releaseYear);
     boolean deleteRecordById(Long recordId);
+    boolean updateStockAmount(Long recordId, Long stock);
 }
