@@ -53,15 +53,6 @@ public class RecordManagerController {
         return new ResponseEntity<>(recordsByGenre, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
-            throws RecordAlreadyExistsException {
-        recordManagerService.insertMusicRecord(musicRecord);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("record", "/api/v1/record/" + musicRecord.getId());
-        return new ResponseEntity<>(musicRecord, httpHeaders, HttpStatus.CREATED);
-    }
-
     @GetMapping({"/releaseYear/{releaseYear}"})
     public ResponseEntity<List<MusicRecord>> getMusicRecordByReleaseYear(@PathVariable Integer releaseYear)
             throws RecordNotFoundException {
@@ -73,12 +64,13 @@ public class RecordManagerController {
         return ResponseEntity.ok(musicRecordsByReleaseYear);
     }
 
-    @DeleteMapping({"/{recordId}"})
-    public ResponseEntity<Void> deleteMusicRecordById(@PathVariable("recordId") Long recordId)
-            throws RecordNotFoundException {
-        boolean isDeleted = recordManagerService.deleteRecordById(recordId);
-        return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping
+    public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
+            throws RecordAlreadyExistsException {
+        recordManagerService.insertMusicRecord(musicRecord);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("record", "/api/v1/record/" + musicRecord.getId());
+        return new ResponseEntity<>(musicRecord, httpHeaders, HttpStatus.CREATED);
     }
 
     @PutMapping("/{recordId}/stock")
@@ -96,5 +88,13 @@ public class RecordManagerController {
         MusicRecord updatedRecord = recordManagerService.updateRecord(id, record);
         return new ResponseEntity<>(updatedRecord, HttpStatus.OK);
 
+    }
+
+    @DeleteMapping({"/{recordId}"})
+    public ResponseEntity<Void> deleteMusicRecordById(@PathVariable("recordId") Long recordId)
+            throws RecordNotFoundException {
+        boolean isDeleted = recordManagerService.deleteRecordById(recordId);
+        return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
