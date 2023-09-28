@@ -11,9 +11,11 @@ import java.util.Optional;
 @Repository
 public interface RecordManagerRepository extends CrudRepository<MusicRecord, Long> {
     Optional<MusicRecord> findByAlbumName(String albumName);
-    Optional<List<MusicRecord>> findByReleaseYear(Integer releaseYear);
-    Optional<List<MusicRecord>> findAllByArtist(String artistName);
-    List<MusicRecord> findByGenre(MusicGenre genre);
 
+    Optional<List<MusicRecord>> findByReleaseYear(Integer releaseYear);
+
+    Optional<List<MusicRecord>> findAllByArtist(String artistName);
+
+    List<MusicRecord> findByGenre(MusicGenre genre);
 
 }

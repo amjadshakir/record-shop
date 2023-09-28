@@ -1,6 +1,5 @@
 package com.techreturners.recordshop.controller;
 
-import com.techreturners.recordshop.exception.InvalidRecordInputException;
 import com.techreturners.recordshop.exception.RecordAlreadyExistsException;
 import com.techreturners.recordshop.exception.RecordNotFoundException;
 import com.techreturners.recordshop.model.MusicGenre;
@@ -20,6 +19,39 @@ public class RecordManagerController {
 
     @Autowired
     RecordManagerService recordManagerService;
+
+    @GetMapping({"/{recordId}"})
+    public ResponseEntity<MusicRecord> getMusicRecord(@PathVariable("recordId") Long recordId)
+            throws RecordNotFoundException {
+        return ResponseEntity.ok(recordManagerService.getMusicRecordById(recordId));
+    }
+
+    @GetMapping({"/all"})
+    public ResponseEntity<List<MusicRecord>> getMusicRecord()
+            throws RecordNotFoundException {
+        return ResponseEntity.ok(recordManagerService.getAllRecords());
+    }
+
+    @GetMapping("/artist/{artistName}/albums")
+    public ResponseEntity<List<MusicRecord>> getAllAlbumsByArtist(@PathVariable String artistName) {
+        List<MusicRecord> albums = recordManagerService.getAllAlbumsByArtist(artistName);
+        if (albums.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/stock")
+    public ResponseEntity<List<MusicRecord>> getAllRecordsInStock() {
+        List<MusicRecord> recordsInStock = recordManagerService.getAllRecordsInStock();
+        return new ResponseEntity<>(recordsInStock, HttpStatus.OK);
+    }
+
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<MusicRecord>> getAllRecordsByGenre(@PathVariable MusicGenre genre) {
+        List<MusicRecord> recordsByGenre = recordManagerService.getAllRecordsByGenre(genre);
+        return new ResponseEntity<>(recordsByGenre, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
@@ -59,30 +91,9 @@ public class RecordManagerController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/artist/{artistName}/albums")
-    public ResponseEntity<List<MusicRecord>> getAllAlbumsByArtist(@PathVariable String artistName) {
-        List<MusicRecord> albums = recordManagerService.getAllAlbumsByArtist(artistName);
-        if (albums.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(albums);
-    }
-
-    @GetMapping("/stock")
-    public ResponseEntity<List<MusicRecord>> getAllRecordsInStock() {
-        List<MusicRecord> recordsInStock = recordManagerService.getAllRecordsInStock();
-        return new ResponseEntity<>(recordsInStock, HttpStatus.OK);
-    }
-
-    @GetMapping("/genre/{genre}")
-    public ResponseEntity<List<MusicRecord>> getAllRecordsByGenre(@PathVariable MusicGenre genre) {
-        List<MusicRecord> recordsByGenre = recordManagerService.getAllRecordsByGenre(genre);
-        return new ResponseEntity<>(recordsByGenre, HttpStatus.OK);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<MusicRecord> replaceExistingRecordDetails(@PathVariable Long id, @RequestBody MusicRecord record) {
-        MusicRecord updatedRecord = recordManagerService.replaceExistingRecord(id, record);
+    public ResponseEntity<MusicRecord> updateMusicRecord(@PathVariable Long id, @RequestBody MusicRecord record) {
+        MusicRecord updatedRecord = recordManagerService.updateRecord(id, record);
         return new ResponseEntity<>(updatedRecord, HttpStatus.OK);
 
     }

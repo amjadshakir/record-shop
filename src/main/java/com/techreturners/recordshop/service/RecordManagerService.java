@@ -6,17 +6,24 @@ import com.techreturners.recordshop.model.MusicRecord;
 import java.util.List;
 
 public interface RecordManagerService {
-    MusicRecord insertMusicRecord(MusicRecord musicRecord);
+    public MusicRecord getMusicRecordById(Long recordId);
+
+    public List<MusicRecord> getAllRecords();
+
+    List<MusicRecord> getAllRecordsInStock();
 
     List<MusicRecord> getMusicRecordByReleaseYear(Integer releaseYear);
 
     List<MusicRecord> getAllAlbumsByArtist(String artistName);
 
-    boolean deleteRecordById(Long recordId);
+    List<MusicRecord> getAllRecordsByGenre(MusicGenre genre);
+
+    MusicRecord insertMusicRecord(MusicRecord musicRecord);
 
     boolean updateStockAmount(Long recordId, Long stock);
-    List<MusicRecord> getAllRecordsInStock();
-    List<MusicRecord> getAllRecordsByGenre(MusicGenre genre);
-    MusicRecord replaceExistingRecord(Long id, MusicRecord record);
+
+    MusicRecord updateRecord(Long id, MusicRecord record);
+
+    boolean deleteRecordById(Long recordId);
 
 }

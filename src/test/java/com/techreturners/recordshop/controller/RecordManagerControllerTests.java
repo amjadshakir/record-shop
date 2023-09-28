@@ -217,7 +217,7 @@ public class RecordManagerControllerTests {
     public void testReplaceExistingRecordDetails() throws Exception {
         MusicRecord musicRecord =
                 new MusicRecord(4L, "Album One", "Artist One", 1992, 100L, MusicGenre.Country);
-        when(mockRecordManagerServiceImpl.replaceExistingRecord(4L, musicRecord)).thenReturn(musicRecord);
+        when(mockRecordManagerServiceImpl.updateRecord(4L, musicRecord)).thenReturn(musicRecord);
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.put("/api/v1/record/4")
                                 .contentType(MediaType.APPLICATION_JSON)
