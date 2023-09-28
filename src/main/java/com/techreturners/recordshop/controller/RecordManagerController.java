@@ -20,7 +20,7 @@ public class RecordManagerController {
     @Autowired
     RecordManagerService recordManagerService;
 
-    @GetMapping({"/{recordId}"})
+    @GetMapping({"/single/{recordId}"})
     public ResponseEntity<MusicRecord> getMusicRecord(@PathVariable("recordId") Long recordId)
             throws RecordNotFoundException {
         return ResponseEntity.ok(recordManagerService.getMusicRecordById(recordId));
