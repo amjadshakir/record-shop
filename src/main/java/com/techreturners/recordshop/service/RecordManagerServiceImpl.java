@@ -93,6 +93,13 @@ public class RecordManagerServiceImpl implements RecordManagerService {
     }
 
     @Override
+    public List<MusicRecord> getMusicRecordsByAlbumName(String albumName) {
+        return musicRecordManagerRepository.findAllByAlbumName(albumName)
+                .orElseThrow(() -> new RecordNotFoundException(
+                        "No music records found for album name: " + albumName));
+    }
+
+    @Override
     public MusicRecord updateRecord(Long id, MusicRecord record) {
         return musicRecordManagerRepository.findById(id)
                 .map(currentRecord -> {

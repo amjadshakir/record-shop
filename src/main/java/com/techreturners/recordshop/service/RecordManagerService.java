@@ -6,9 +6,9 @@ import com.techreturners.recordshop.model.MusicRecord;
 import java.util.List;
 
 public interface RecordManagerService {
-    public MusicRecord getMusicRecordById(Long recordId);
+    MusicRecord getMusicRecordById(Long recordId);
 
-    public List<MusicRecord> getAllRecords();
+    List<MusicRecord> getAllRecords();
 
     List<MusicRecord> getAllRecordsInStock();
 
@@ -17,6 +17,8 @@ public interface RecordManagerService {
     List<MusicRecord> getAllAlbumsByArtist(String artistName);
 
     List<MusicRecord> getAllRecordsByGenre(MusicGenre genre);
+
+    List<MusicRecord> getMusicRecordsByAlbumName(String albumName);
 
     MusicRecord insertMusicRecord(MusicRecord musicRecord);
 

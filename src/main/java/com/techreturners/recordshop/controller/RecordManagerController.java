@@ -64,6 +64,15 @@ public class RecordManagerController {
         return ResponseEntity.ok(musicRecordsByReleaseYear);
     }
 
+    @GetMapping("/album/{albumName}")
+    public ResponseEntity<List<MusicRecord>> getMusicRecordsByAlbumName(@PathVariable String albumName) {
+        List<MusicRecord> recordsByAlbumName = recordManagerService.getMusicRecordsByAlbumName(albumName);
+        if (recordsByAlbumName.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(recordsByAlbumName);
+    }
+
     @PostMapping
     public ResponseEntity<MusicRecord> addMusicRecord(@RequestBody MusicRecord musicRecord)
             throws RecordAlreadyExistsException {
